@@ -243,6 +243,11 @@ resource "aws_alb_target_group_attachment" "target-group-2-attachment" {
 }
 */
 
+
+
+
+
+
 resource "aws_alb" "my-alb" {
  name = "my-alb"
  subnets = ["${aws_subnet.main-public-1.id}","${aws_subnet.main-public-2.id}"]
@@ -251,10 +256,15 @@ resource "aws_alb" "my-alb" {
 
 
 
+resource "aws_acm_certificate" "mycert" {
+  # (resource arguments)
+}
+
 resource "aws_alb_listener" "listener" {
   load_balancer_arn = "${aws_alb.my-alb.arn}"
-  port              = "80"
-
+  port              = "443"
+  protocol = "HTTPS"
+  certificate_arn = "${aws_acm_certificate.mycert.arn}" 
 
 
   default_action {
@@ -278,7 +288,7 @@ resource "aws_alb_listener" "listener" {
 
 }
 
-resource "aws_alb_listener_rule" "listener_rule" {:q
+resource "aws_alb_listener_rule" "listener_rule" {
     listener_arn = "${aws_alb_listener.listener.arn}"
 
     action {
@@ -310,3 +320,5 @@ resource "aws_alb_listener_rule" "listener_rule" {:q
     values = ["admin.servermyip.com"]
     } 
 }
+
+

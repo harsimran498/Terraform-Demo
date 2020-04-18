@@ -18,3 +18,4 @@ variable "AMIS" {
     eu-west-1 = "ami-01793b684af7a3e2c" 
   }
 }
+
