@@ -1,9 +1,6 @@
 provider "aws" {
   region = var.AWS_REGION
-  access_key = "AKIAUGEKRUWF7TQDP4E5"
-  secret_key = "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"
 }
-
 
 resource "aws_key_pair" "mykeypair" {
   key_name   = "mykeypair"
@@ -255,16 +252,26 @@ resource "aws_alb" "my-alb" {
 }
 
 
-
-resource "aws_acm_certificate" "mycert" {
+/*
+resource "aws_acm_certificate" "cert" {
   # (resource arguments)
 }
+
+*/
+
+data "aws_acm_certificate" "sslcert" {
+  domain  =  "servermyip.com"
+  types   =  ["AMAZON_ISSUED"]
+  most_recent  =  true
+}
+
 
 resource "aws_alb_listener" "listener" {
   load_balancer_arn = "${aws_alb.my-alb.arn}"
   port              = "443"
   protocol = "HTTPS"
-  certificate_arn = "${aws_acm_certificate.mycert.arn}" 
+  ssl_policy = "ELBSecurityPolicy-2016-08"
+  certificate_arn = "${data.aws_acm_certificate.sslcert.arn}" 
 
 
   default_action {
