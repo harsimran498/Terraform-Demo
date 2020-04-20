@@ -3,6 +3,7 @@
 commads to run after git clone
 
 1. Terraform init
+3. Terraform validate (to check if syntax for all files is right)
 2. Terraform plan
 3. Terraform apply
 
@@ -16,8 +17,12 @@ It will then created ALB and reqd set of rules with conditions.
 
 IMPORT SSL CERTIFICATE
 
-In order to import Public ACM certificate in terraform from any infra, use this command and then with terraform script , you can associate the same to ALB to hit the website on HTTPS.
+There are two options to import already created ssl certif in terraform:
+
+1. In order to import Public ACM certificate in terraform from any infra, use this command and then with terraform script , you can associate the same to ALB to hit the website on HTTPS.
 
 terraform import aws_acm_certificate.cert arn:aws:acm:eu-west-1:288053372299:certificate/5dfebca7-8833-4b0e-b8e1-ff6e3245df21
+
+2. The code itself , please check the main.tf file for that in resource tag - "aws_acm_certificate".
 
 
